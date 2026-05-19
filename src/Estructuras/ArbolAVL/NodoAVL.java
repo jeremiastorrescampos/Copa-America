@@ -6,8 +6,8 @@ public class NodoAVL {
     private NodoAVL izquierdo;
     private NodoAVL derecho;
 
-    public NodoAVL(Comparable e, NodoAVL izq, NodoAVL der){
-        this.elem = e;
+    public NodoAVL(Comparable elemento, NodoAVL izq, NodoAVL der){
+        this.elem = elemento;
         this.izquierdo = izq;
         this.derecho = der;
         recalcularAltura();

@@ -16,7 +16,7 @@ public class TablaHash {
         int pos = Math.abs((elem.hashCode() % this.TAMANIO)); 
         //Se agrega Math.abs para evitar posiciones negativas
 
-        NodoHash aux = tabla[pos];
+        //NodoHash aux = tabla[pos];
         //Como la Tabla debe permitir duplicados, simplemente lo inserto.
 
         this.tabla[pos] = new NodoHash(elem, this.tabla[pos]);

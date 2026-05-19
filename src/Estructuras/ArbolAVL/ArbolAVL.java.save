@@ -1,4 +1,7 @@
 package Estructuras.ArbolAVL;
+
+import java.util.List;
+
 import Estructuras.lineales.listaDinamica.*;
 
 
@@ -34,13 +37,13 @@ public class ArbolAVL {
     }
 
     public boolean insertar(Comparable elemento){
-        boolean exito = true; 
+        boolean exito = true;
         if (this.raiz == null){
             this.raiz = new NodoAVL(elemento);
         }else{
             exito = insertarAux(this.raiz, elemento);
             if (exito){/* Si se insertó correctamente, se realiza el balanceo del árbol     */
-                this.raiz = realizarBalanceAvl(this.raiz); // Se actualiza la raíz del árbol después de realizar el balanceo, ya que la raíz podría haber cambiado debido a las rotaciones realizadas durante el proceso de balanceo.
+                this.raiz = realizarBalanceAvl(this.raiz);
                 // this.raiz.recalcularAltura();
             }
         }
@@ -50,9 +53,9 @@ public class ArbolAVL {
     private boolean insertarAux(NodoAVL n, Comparable elemento){
         boolean exito = true;
         if ((elemento.compareTo(n.getElem()) == 0)){
-            exito = false;//manejo de duplicados, no se permite insertar un elemento que ya existe en el árbol.
+            exito = false;
         }else{
-            if (elemento.compareTo(n.getElem()) < 0){/* Si el elemento es menor que el nodo actual */
+            if (elemento.compareTo(n.getElem()) < 0){
                 if (n.getIzquierdo() != null){
                     /* Una vez que devuelve true, analiza con el padre para ver si se necesita algun balance... */
                     exito = insertarAux(n.getIzquierdo(), elemento);
@@ -85,7 +88,7 @@ public class ArbolAVL {
 
     /* Se analiza el balance del nodo dado y se verifica si se necesita otra rotacion */
     private NodoAVL realizarBalanceAvl(NodoAVL n){
-        n.recalcularAltura();// Se recalcula la altura del nodo antes de verificar el balance, ya que puede haber cambiado debido a la inserción o eliminación de un nodo hijo. Esto asegura que el balance se evalúe correctamente en función de la altura actualizada del nodo.
+        n.recalcularAltura();
         NodoAVL nuevaRaiz = n;
         if (obtenerBalance(n) == 2){
             if (obtenerBalance(n.getIzquierdo()) >= 0){
@@ -94,21 +97,20 @@ public class ArbolAVL {
                 n.setIzquierdo(rotacionSimpleIzquierda(n.getIzquierdo()));  
                 nuevaRaiz = rotacionSimpleDerecha(n);
             }
-        }else{
-            if (obtenerBalance(n) == -2){
-                if (obtenerBalance(n.getDerecho()) <= 0){
-                    nuevaRaiz = rotacionSimpleIzquierda(n);
-                }else{
-                    n.setDerecho(rotacionSimpleDerecha(n.getDerecho()));
-                    nuevaRaiz = rotacionSimpleIzquierda(n);
-                }
+        }
+        if (obtenerBalance(n) == -2){
+            if (obtenerBalance(n.getDerecho()) <= 0){
+                nuevaRaiz = rotacionSimpleIzquierda(n);
+            }else{
+                n.setDerecho(rotacionSimpleDerecha(n.getDerecho()));
+                nuevaRaiz = rotacionSimpleIzquierda(n);
             }
         }
         n.recalcularAltura();
         return nuevaRaiz;
     }
 
-    /* Se obtiene el balance del nodo con sus hijos */
+    /* Se obtiuene el balance del nodo con sus hijos */
     private int obtenerBalance(NodoAVL n){
         int balance;
         if (n.getIzquierdo() == null){
@@ -140,7 +142,7 @@ public class ArbolAVL {
         NodoAVL h = pivote.getDerecho();
         NodoAVL temp = h.getIzquierdo();
         h.setIzquierdo(pivote);
-        pivote.setDerecho(temp); 
+        pivote.setDerecho(temp);
         pivote.recalcularAltura();
         h.recalcularAltura();
         return h;
@@ -280,7 +282,7 @@ public class ArbolAVL {
         return exito;
     }
     
-    private void borrarNodo(NodoAVL n){//Siempre busco al meyor de los menores, es decir el nodo mas a la derecha del subarbol izquierdo del nodo a eliminar
+    private void borrarNodo(NodoAVL n){
         /* Caso de los dos hijos */
         if (n.getDerecho() != null && n.getIzquierdo() != null){
             if (n.getIzquierdo().getDerecho() != null){
@@ -295,10 +297,8 @@ public class ArbolAVL {
                 n.setElem(n.getIzquierdo().getElem());
                 n.setIzquierdo(n.getIzquierdo().getIzquierdo());
             }else{
-                if(n.getDerecho() != null){
-                    n.setElem(n.getDerecho().getElem());
-                    n.setDerecho(n.getDerecho().getDerecho()); //
-                }
+                n.setElem(n.getDerecho().getElem());
+                n.setDerecho(n.getDerecho().getDerecho());
             }
         }
         n.recalcularAltura();
@@ -309,13 +309,8 @@ public class ArbolAVL {
         Comparable candidato = null;
         if (n != null){
             if (n.getDerecho().getDerecho() == null){
-                if(n.getDerecho().getIzquierdo() != null){// Si el nodo candidato tiene un hijo izquierdo, se asigna ese hijo al nodo derecho del nodo actual, ya que el nodo candidato se va a eliminar y su
-                    candidato = n.getDerecho().getElem();
-                    n.setDerecho(n.getDerecho().getIzquierdo());
-                }else{
-                    candidato = n.getDerecho().getElem();
-                    n.setDerecho(null); // Si el nodo candidato no tiene hijos, simplemente se elimina el nodo derecho del nodo actual. 
-                }
+                candidato = n.getDerecho().getElem();
+                n.setDerecho(n.getDerecho().getDerecho());
             }else{
                 candidato = buscarCandidato(n.getDerecho());
                 n.setDerecho(n.getDerecho());

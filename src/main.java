@@ -13,7 +13,7 @@ import Estructuras.Grafos.*;
 import Estructuras.TablaHashAbierto.TablaHash;
 
 public class main {
-    private static File obj = new File("../src/log.txt");
+    private static File obj = new File("log.txt");
     private static ArbolAVL arbolEquipos= cargarEquipos();
     private static GrafoEtiquetado mapa = cargarCiudades();
     private static TablaHash tablaPartidos = cargarPartidos();
@@ -70,8 +70,7 @@ public class main {
             case 6: menuViajes(); break;
             case 7:
                 log("Menu: GolesAFavor");
-                // Si ya tenés implementado el punto 7 en otro método, llamalo acá.
-                // Por ahora muestro un placeholder para que compile sin tocar tu lógica.
+                
                 System.out.println("Funcionalidad 7: mostrar equipos ordenados por goles a favor (implementá tu estructura auxiliar).");
                 break;
             case 8:
@@ -170,7 +169,7 @@ private static void menuViajes() {
 
 // ======================= UTILIDAD: Mostrar Sistema (debug) =======================
 private static void mostrarSistema() {
-    // Solo imprime; no cambia tu lógica. Si preferís, podés comentar/ajustar.
+    
     System.out.println("\n--- AVL de Equipos ---");
     System.out.println(arbolEquipos.toString());
 
@@ -312,30 +311,35 @@ private static void mostrarSistema() {
     ciudadOri = (Ciudad)mapa.recuperarElemento(new Ciudad(ciudadOrigen));
     log("AltaCamino: inicio origen=" + ciudadOrigen);
 
-    if (ciudadOri!=null) {
+    if (ciudadOri!=null) 
+    {
         System.out.println("Ingrese la ciudad destino: ");
         ciudadDestino= sc.nextLine();
         ciudadDest = (Ciudad)mapa.recuperarElemento(new Ciudad(ciudadDestino));
-        if (ciudadOri!=null) { 
+        if (ciudadDest!=null) 
+        { 
             System.out.println("Ingrese el tiempo que tarda: ");
             distancia= sc.nextFloat();
             sc.nextLine();
             log("AltaCamino: datos destino=" + ciudadDestino + " tiempo=" + distancia);
 
-            if (mapa.existeArco(ciudadOri, ciudadDest)) { 
+            if (mapa.existeArco(ciudadOri, ciudadDest))
+            { 
                boolean ok = mapa.insertarArco(ciudadOri, ciudadDest, distancia);
                System.out.println(ok ? "Camino insertado" : "No se pudo insertar el camino");
                log("AltaCamino: " + (ok ? "OK" : "FAIL insert"));
-            }else{
+            }
+            else
+            {
                 System.out.println("El camino ya existe");
                 log("AltaCamino: WARN ya existe");
             }
         } else {
-            System.out.println("La ciudad destino no existe"); // mensaje faltante
+            System.out.println("La ciudad destino no existe"); 
             log("AltaCamino: FAIL destino no existe=" + ciudadDestino);
         }
     } else {
-        System.out.println("La ciudad origen no existe"); // mensaje faltante
+        System.out.println("La ciudad origen no existe"); 
         log("AltaCamino: FAIL origen no existe=" + ciudadOrigen);
     }
 }
@@ -352,7 +356,7 @@ private static void mostrarSistema() {
         System.out.println("Ingrese la ciudad destino: ");
         ciudadDestino= sc.nextLine();
         ciudadDest = (Ciudad)mapa.recuperarElemento(new Ciudad(ciudadDestino));
-        if (ciudadOri!=null) {
+        if (ciudadDest!=null) {
             if (!mapa.existeArco(ciudadOri, ciudadDest)) { 
                boolean ok = mapa.eliminarArco(ciudadOri, ciudadDest);
                System.out.println(ok ? "Camino eliminado" : "No se pudo eliminar el camino");
@@ -761,13 +765,13 @@ private static void mostrarSistema() {
     log("FiltroAlojamiento: inicio totalCaminos=" + todosLosCaminos.longitud());
     Lista caminosFiltrados = new Lista();
 
-    for (int i = 0; i < todosLosCaminos.longitud(); i++) { // (base 1-based en recuperar)
+    for (int i = 0; i < todosLosCaminos.longitud(); i++) { 
         Lista camino = (Lista) todosLosCaminos.recuperar(i + 1);
 
         boolean alojamiento = false;
-        int j = 0; // 0..len-1, recupero en j+1
+        int j = 0;
 
-        // while: corto cuando encuentro una ciudad con alojamiento (sin cambiar lógica)
+
         while (!alojamiento && j < camino.longitud()) {
             Ciudad ciudad = (Ciudad) camino.recuperar(j + 1);
             alojamiento = ciudad.getAlojamiento();
@@ -816,7 +820,7 @@ private static void mostrarSistema() {
     Equipo equipo;
 
     try {
-        archivo = new FileReader("../ArchivoEquipos.txt");
+        archivo = new FileReader("ArchivoEquipos.txt");
         lector = new BufferedReader(archivo);
 
         while ((cadena = lector.readLine()) != null) {
@@ -832,7 +836,7 @@ private static void mostrarSistema() {
 }
 
     public static Equipo crearEquipo(String cadena) {
-    // formato esperado: nombre;dt;grupo
+    
     String[] atributos = cadena.split(";");
     Equipo equipo = new Equipo(atributos[0], atributos[1], atributos[2]);
     log("CrearEquipo: OK " + equipo.toString());
@@ -848,7 +852,7 @@ private static void mostrarSistema() {
     Ciudad ciudad;
 
     try {
-        archivo = new FileReader("../ArchivoCiudades.txt");
+        archivo = new FileReader("ArchivoCiudades.txt");
         lector = new BufferedReader(archivo);
         // Primero cargo todas las ciudades
         while ((cadena = lector.readLine()) != null) {
@@ -856,11 +860,11 @@ private static void mostrarSistema() {
             grafoCiudades.insertarVertice(ciudad);
         }
         // Ahora cargo las rutas entre ciudades
-        archivo = new FileReader("../ArchivoRutas.txt");
+        archivo = new FileReader("ArchivoRutas.txt");
         lector = new BufferedReader(archivo);
         while ((cadena = lector.readLine()) != null) {
             String[] atributos = cadena.split(";");
-            // Cargo con new Ciudad para poder ubicar la ciudad
+            
             grafoCiudades.insertarArco(new Ciudad(atributos[0]), new Ciudad(atributos[1]), Integer.parseInt(atributos[2]));
         }
         log("CargarCiudades: OK");
@@ -872,7 +876,7 @@ private static void mostrarSistema() {
 }
 
     public static Ciudad crearCiudad(String cadena) {
-    // formato esperado: nombre;alojamiento;esSede
+    
     String[] atributos = cadena.split(";");
     Ciudad ciudad = new Ciudad(atributos[0], Boolean.parseBoolean(atributos[1]), Boolean.parseBoolean(atributos[2]));
     log("CrearCiudad: OK " + ciudad.getNombre() + " alo=" + atributos[1] + " sede=" + atributos[2]);
@@ -890,7 +894,7 @@ private static void mostrarSistema() {
     Partido partido;
 
     try {
-        archivo = new FileReader("../ArchivoPartidos.txt");
+        archivo = new FileReader("ArchivoPartidos.txt");
         lector = new BufferedReader(archivo);
 
         while ((cadena = lector.readLine()) != null) {
@@ -898,7 +902,7 @@ private static void mostrarSistema() {
             equipo1 = (Equipo) arbolEquipos.buscarElemento(new Equipo(partido.getNombreEq1()));
             equipo2 = (Equipo) arbolEquipos.buscarElemento(new Equipo(partido.getNombreEq2()));
 
-            // Actualizaciones según tu lógica original
+            
             equipo1.actualizarGoles(partido.getGolesEq1(), partido.getGolesEq2());
             equipo2.actualizarGoles(partido.getGolesEq2(), partido.getGolesEq1());
 
@@ -918,7 +922,7 @@ private static void mostrarSistema() {
 }
 
     public static Partido crearPartido(String cadena){
-    // formato esperado: eq1;eq2;fase;ciudad;estadio;g1;g2
+    
     String[] atributos = cadena.split(";");
     Partido partido = new Partido(
         atributos[0], atributos[1], atributos[2],

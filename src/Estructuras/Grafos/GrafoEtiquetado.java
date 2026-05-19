@@ -597,35 +597,38 @@ public class GrafoEtiquetado {
 
         if (nodo != null) {
             caminoActual.insertar(nodo.getElem(), caminoActual.longitud() + 1);
+            System.out.println("Camino actual: " + caminoActual.toString());
+            if (caminoMasCorto.esVacia() || (caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
+            
+                NodoAdyacente nodoAux = nodo.getNodoAdy();
 
-            NodoAdyacente nodoAux = nodo.getNodoAdy();
+                while (nodoAux != null && (caminoMasCorto.esVacia() || caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
 
-            while (nodoAux != null) {
-
-                if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
+                    if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
                     //Si llego al destino, inserto el elemento.
 
-                    if (caminoMasCorto.esVacia() || (caminoActual.longitud() < caminoMasCorto.longitud())) {
+                        if (caminoMasCorto.esVacia() || (caminoActual.longitud() < caminoMasCorto.longitud())) {
 
-                        caminoMasCorto = caminoActual.Clone();
+                            caminoMasCorto = caminoActual.Clone();
 
-                        caminoMasCorto.insertar(destino.getElem(), caminoActual.longitud() + 1);
+                            caminoMasCorto.insertar(destino.getElem(), caminoActual.longitud() + 1);
+
+                        }
+
+                    } else {
+
+                        if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) { //Si el nodo no está visitado,
+                            //Busco con ese nodo al destino.
+
+                            caminoMasCorto = caminoMasCortoAux(nodoAux.getVertice(), destino, caminoActual, caminoMasCorto);
+                            caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+
+                        }
 
                     }
-
-                } else {
-
-                    if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) { //Si el nodo no está visitado,
-                        //Busco con ese nodo al destino.
-
-                        caminoMasCorto = caminoMasCortoAux(nodoAux.getVertice(), destino, caminoActual, caminoMasCorto);
-                        caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
-
-                    }
+                    nodoAux = nodoAux.getSigAdy();
 
                 }
-                nodoAux = nodoAux.getSigAdy();
-
             }
 
         }
