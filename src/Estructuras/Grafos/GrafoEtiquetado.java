@@ -326,11 +326,9 @@ public class GrafoEtiquetado {
         while (aux != null && (nodoOrigen == null || nodoDestino == null)) {
             if (aux.getElem().equals(origen)) {
                 nodoOrigen = aux;
-
             }
             if (aux.getElem().equals(destino)) {
                 nodoDestino = aux;
-
             }
 
             aux = aux.getSigVertice();
@@ -411,7 +409,6 @@ public class GrafoEtiquetado {
 
         }
         return lista;
-
     }
 
     private Lista caminoMenosPesoAux(NodoVertice nodo, NodoVertice destino, Lista caminoActual, Lista caminoMenosPeso, int[] peso, int[] menorPeso) {
@@ -422,41 +419,45 @@ public class GrafoEtiquetado {
             caminoActual.insertar(nodo.getElem(), caminoActual.longitud() + 1);
 
             NodoAdyacente nodoAux = nodo.getNodoAdy();
-            int pesoArista = (int) nodoAux.getEtiqueta();
+            int pesoArista;
 
             while (nodoAux != null) {
-
+                pesoArista = (int) nodoAux.getEtiqueta();
                 if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) {
                     peso[0] +=pesoArista;
 
-                }
+                
+                    if(peso[0] < menorPeso[0] || menorPeso[0] == -1){
+                        if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
+                        //Si llego al destino, inserto el elemento.
 
-                if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
-                    //Si llego al destino, inserto el elemento.
+                            if ((peso[0] < menorPeso[0]) || (menorPeso[0] == -1)) {
 
-                    if ((peso[0] < menorPeso[0]) || (menorPeso[0] == -1)) {
+                                caminoMenosPeso = caminoActual.Clone();
 
-                        caminoMenosPeso = caminoActual.Clone();
+                                caminoMenosPeso.insertar(destino.getElem(), caminoActual.longitud() + 1);
 
-                        caminoMenosPeso.insertar(destino.getElem(), caminoActual.longitud() + 1);
+                                menorPeso[0] = peso[0];
+                                System.out.println("Menor peso actualizado " + menorPeso[0]);
 
-                        menorPeso[0] = peso[0];
-                        System.out.println("Menor peso actualizado " + menorPeso[0]);
+                            }
+                            peso[0] -= pesoArista;
 
-                    }
-                    peso[0] -= pesoArista;
+                        } else {
 
-                } else {
+                            if ((caminoActual.localizar(nodoAux.getVertice().getElem()) < 0)) { //Si el nodo no está visitado,
+                                //Busco con ese nodo al destino.
 
-                    if ((caminoActual.localizar(nodoAux.getVertice().getElem()) < 0)) { //Si el nodo no está visitado,
-                        //Busco con ese nodo al destino.
+                                caminoMenosPeso = caminoMenosPesoAux(nodoAux.getVertice(), destino, caminoActual, caminoMenosPeso, peso, menorPeso);
+                                caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+                                peso[0] -=pesoArista;
 
-                        caminoMenosPeso = caminoMenosPesoAux(nodoAux.getVertice(), destino, caminoActual, caminoMenosPeso, peso, menorPeso);
-                        caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+                            }
+                        }
+                    }else{
+                        //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
                         peso[0] -=pesoArista;
-
                     }
-
                 }
                 nodoAux = nodoAux.getSigAdy();
 
@@ -510,41 +511,46 @@ public class GrafoEtiquetado {
             caminoActual.insertar(nodo.getElem(), caminoActual.longitud() + 1);
 
             NodoAdyacente nodoAux = nodo.getNodoAdy();
-            int pesoArista = (int) nodoAux.getEtiqueta();
+            int pesoArista;
 
             while (nodoAux != null) {
-
+                pesoArista = (int) nodoAux.getEtiqueta();
                 if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0 && nodoAux.getVertice() != estorbo) {
                     peso[0] +=pesoArista;
 
-                }
+                
+                    if(peso[0] < menorPeso[0] || menorPeso[0] == -1){
+                        if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
+                            //Si llego al destino, inserto el elemento.
+                        
+                            if ((peso[0] < menorPeso[0]) || (menorPeso[0] == -1)) {
+                            
+                                caminoMenosPeso = caminoActual.Clone();
+                            
+                                caminoMenosPeso.insertar(destino.getElem(), caminoActual.longitud() + 1);
+                            
+                                menorPeso[0] = peso[0];
+                                System.out.println("Menor peso actualizado " + menorPeso[0]);
+                            
+                            }
+                            peso[0] -= pesoArista;
+                        
+                        } else {
 
-                if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
-                    //Si llego al destino, inserto el elemento.
+                            if ((caminoActual.localizar(nodoAux.getVertice().getElem()) < 0)&& nodoAux.getVertice() != estorbo) { //Si el nodo no está visitado,
+                                //Busco con ese nodo al destino.
+                            
+                                caminoMenosPeso = caminoMenosPesoEvitandoUnVerticeAux(nodoAux.getVertice(), destino, caminoActual, caminoMenosPeso, peso, menorPeso, estorbo);
+                                caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+                                peso[0] -=pesoArista;
+                            
+                            }
 
-                    if ((peso[0] < menorPeso[0]) || (menorPeso[0] == -1)) {
-
-                        caminoMenosPeso = caminoActual.Clone();
-
-                        caminoMenosPeso.insertar(destino.getElem(), caminoActual.longitud() + 1);
-
-                        menorPeso[0] = peso[0];
-                        System.out.println("Menor peso actualizado " + menorPeso[0]);
-
-                    }
-                    peso[0] -= pesoArista;
-
-                } else {
-
-                    if ((caminoActual.localizar(nodoAux.getVertice().getElem()) < 0)&& nodoAux.getVertice() != estorbo) { //Si el nodo no está visitado,
-                        //Busco con ese nodo al destino.
-
-                        caminoMenosPeso = caminoMenosPesoEvitandoUnVerticeAux(nodoAux.getVertice(), destino, caminoActual, caminoMenosPeso, peso, menorPeso, estorbo);
-                        caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+                        }
+                    }else{
+                        //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
                         peso[0] -=pesoArista;
-
                     }
-
                 }
                 nodoAux = nodoAux.getSigAdy();
 

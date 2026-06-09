@@ -1,11 +1,1 @@
-[2026-05-19T16:53:32.313288332] APP: inicio
-[2026-05-19T16:53:37.917037105] Viajes: CaminoMasCorto (por cantidad de ciudades)
-[2026-05-19T16:53:41.924721264] CaminoMasCorto: inicio origen=MIAMI
-[2026-05-19T16:53:46.563519980] CaminoMasCorto: OK MIAMI -> VEGAS
-[2026-05-19T16:57:19.871195668] Viajes: CaminoMasCorto (por cantidad de ciudades)
-[2026-05-19T16:57:24.417989215] CaminoMasCorto: inicio origen=DALLAS
-[2026-05-19T16:57:27.042120839] CaminoMasCorto: OK DALLAS -> DENVER
-[2026-05-19T16:57:48.721730479] Viajes: CaminoMasRapido (por tiempo)
-[2026-05-19T16:57:52.566360196] CaminoMasRapido: inicio origen=DALLAS
-[2026-05-19T16:57:56.607764298] CaminoMasRapido: OK DALLAS -> DENVER
-[2026-05-19T17:35:36.379399186] APP: fin
+[2026-06-08T21:51:36.998359978] APP: inicio

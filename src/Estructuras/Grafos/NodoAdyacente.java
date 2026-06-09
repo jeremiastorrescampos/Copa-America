@@ -1,7 +1,7 @@
 
 package Estructuras.Grafos;
 
-public class NodoAdyacente { //Ver el tema del compareTo en los dos nodos
+public class NodoAdyacente { 
     
     private NodoVertice vertice;
     private NodoAdyacente sigAdy;
