@@ -1,4 +1,4 @@
-package Estructuras.clases;
+package clases;
 
 public class ClavePartido {
 

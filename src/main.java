@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import Estructuras.ArbolAVL.ArbolAVL;
-import Estructuras.clases.*;
 import Estructuras.lineales.listaDinamica.Lista;
+import clases.*;
 import Estructuras.Grafos.*;
 import Estructuras.TablaHashAbierto.TablaHash;
 

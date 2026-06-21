@@ -1,4 +1,4 @@
-package Estructuras.clases;
+package clases;
 public class Equipo implements Comparable<Equipo> {
     private String nombre;
     private String dt;
