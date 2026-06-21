@@ -216,6 +216,7 @@ public class ArbolAVL {
                     this.raiz = null;
                 }else{
                     borrarNodo(this.raiz);
+                    this.raiz = realizarBalanceAvl(this.raiz);
                 }
             }else{
                 exito = eliminarAux(this.raiz, elemento);
@@ -285,6 +286,7 @@ public class ArbolAVL {
         if (n.getDerecho() != null && n.getIzquierdo() != null){
             if (n.getIzquierdo().getDerecho() != null){
                 n.setElem(buscarCandidato(n.getIzquierdo()));
+                n.setIzquierdo(realizarBalanceAvl(n.getIzquierdo()));
             }else{
                 n.setElem(n.getIzquierdo().getElem());
                 n.setIzquierdo(n.getIzquierdo().getIzquierdo());
@@ -297,7 +299,7 @@ public class ArbolAVL {
             }else{
                 if(n.getDerecho() != null){
                     n.setElem(n.getDerecho().getElem());
-                    n.setDerecho(n.getDerecho().getDerecho()); //
+                    n.setDerecho(n.getDerecho().getDerecho()); 
                 }
             }
         }
@@ -318,14 +320,15 @@ public class ArbolAVL {
                 }
             }else{
                 candidato = buscarCandidato(n.getDerecho());
-                n.setDerecho(n.getDerecho());
+                n.setDerecho(realizarBalanceAvl(n.getDerecho()));
+                //n.setDerecho(n.getDerecho());  //  Si el nodo candidato tiene un hijo derecho, se asigna ese hijo al nodo derecho del nodo actual, ya que el nodo candidato se va a eliminar y su hijo derecho debe ocupar su lugar en el árbol.
             }
             n.recalcularAltura();
+            
         }
         return candidato;
     }
 
-    /* Para la clase EquipoFutbol */
 
     /* - - - - -  */
 
@@ -373,8 +376,6 @@ public class ArbolAVL {
 
     private void listarPorRangoAux(NodoAVL n, Comparable min, Comparable max, Lista lis){
         if (n != null){
-            // System.out.println(min.compareTo(n.getElem()));
-            // System.out.println(max.compareTo(n.getElem()));
             if (min.compareTo(n.getElem()) <= 0 && max.compareTo(n.getElem()) >= 0){
                 lis.insertar(n.getElem(), lis.longitud() + 1);
             }

@@ -21,8 +21,10 @@ public class main {
     
     private static LocalDateTime now = LocalDateTime.now();
     public static void main(String[] args){
-        
-        //System.out.println(arbolEquipos.toString());
+        /*arbolEquipos.eliminar(new Equipo("Ecuador"));
+        System.out.println(arbolEquipos.toString());
+        arbolEquipos.eliminar(new Equipo("Francia"));
+        System.out.println(arbolEquipos.toString());*/
         //System.out.println(mapa.toString());
         //System.out.println(tablaPartidos.toString());
         //System.out.println(mapa.listarEnAnchura());

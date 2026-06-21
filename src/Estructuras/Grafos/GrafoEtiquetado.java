@@ -420,7 +420,7 @@ public class GrafoEtiquetado {
 
             NodoAdyacente nodoAux = nodo.getNodoAdy();
             int pesoArista;
-
+            System.out.println("Camino actual: " + caminoActual.toString() + " Peso actual: " + peso[0]);
             while (nodoAux != null) {
                 pesoArista = (int) nodoAux.getEtiqueta();
                 if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) {
@@ -439,9 +439,8 @@ public class GrafoEtiquetado {
 
                                 menorPeso[0] = peso[0];
                                 System.out.println("Menor peso actualizado " + menorPeso[0]);
-
+                                peso[0] -=pesoArista;
                             }
-                            peso[0] -= pesoArista;
 
                         } else {
 
@@ -451,14 +450,15 @@ public class GrafoEtiquetado {
                                 caminoMenosPeso = caminoMenosPesoAux(nodoAux.getVertice(), destino, caminoActual, caminoMenosPeso, peso, menorPeso);
                                 caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
                                 peso[0] -=pesoArista;
-
                             }
                         }
                     }else{
-                        //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
                         peso[0] -=pesoArista;
                     }
+                        //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
+
                 }
+                
                 nodoAux = nodoAux.getSigAdy();
 
             }
@@ -531,9 +531,9 @@ public class GrafoEtiquetado {
                             
                                 menorPeso[0] = peso[0];
                                 System.out.println("Menor peso actualizado " + menorPeso[0]);
-                            
+                                peso[0] -=pesoArista;
                             }
-                            peso[0] -= pesoArista;
+
                         
                         } else {
 
@@ -548,10 +548,11 @@ public class GrafoEtiquetado {
 
                         }
                     }else{
-                        //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
                         peso[0] -=pesoArista;
                     }
+                    //Si el peso ya es mayor, no sigo buscando por ese camino, y resto el peso de la arista para seguir buscando por otro camino.
                 }
+                
                 nodoAux = nodoAux.getSigAdy();
 
             }
@@ -586,7 +587,7 @@ public class GrafoEtiquetado {
         if (nodoOrigen != null && nodoDestino != null) {
 
             if (nodoOrigen.getElem().equals(nodoDestino.getElem())) {
-                lista.insertar(nodoOrigen, 1);
+                lista.insertar(nodoOrigen.getElem(), 1);
 
             } else {
 
@@ -601,41 +602,43 @@ public class GrafoEtiquetado {
 
     private Lista caminoMasCortoAux(NodoVertice nodo, NodoVertice destino, Lista caminoActual, Lista caminoMasCorto) {
 
+
+
         if (nodo != null) {
             caminoActual.insertar(nodo.getElem(), caminoActual.longitud() + 1);
-            System.out.println("Camino actual: " + caminoActual.toString());
+            //System.out.println("Camino actual: " + caminoActual.toString());
             if (caminoMasCorto.esVacia() || (caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
             
                 NodoAdyacente nodoAux = nodo.getNodoAdy();
 
-                while (nodoAux != null && (caminoMasCorto.esVacia() || caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
-
-                    if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
-                    //Si llego al destino, inserto el elemento.
-
-                        if (caminoMasCorto.esVacia() || (caminoActual.longitud() < caminoMasCorto.longitud())) {
-
-                            caminoMasCorto = caminoActual.Clone();
-
-                            caminoMasCorto.insertar(destino.getElem(), caminoActual.longitud() + 1);
-
+                    while (nodoAux != null && (caminoMasCorto.esVacia() || caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
+                    
+                        if (nodoAux.getVertice().getElem().equals(destino.getElem())) {
+                        //Si llego al destino, inserto el elemento.
+                        
+                            if (caminoMasCorto.esVacia() || (caminoActual.longitud() + 1 < caminoMasCorto.longitud())) {
+                            
+                                caminoMasCorto = caminoActual.Clone();
+                            
+                                caminoMasCorto.insertar(destino.getElem(), caminoActual.longitud() + 1);
+                            
+                            }
+                        
+                        } else {
+                        
+                            if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) { //Si el nodo no está visitado,
+                                //Busco con ese nodo al destino.
+                            
+                                caminoMasCorto = caminoMasCortoAux(nodoAux.getVertice(), destino, caminoActual, caminoMasCorto);
+                                caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
+                            
+                            }
+                        
                         }
-
-                    } else {
-
-                        if (caminoActual.localizar(nodoAux.getVertice().getElem()) < 0) { //Si el nodo no está visitado,
-                            //Busco con ese nodo al destino.
-
-                            caminoMasCorto = caminoMasCortoAux(nodoAux.getVertice(), destino, caminoActual, caminoMasCorto);
-                            caminoActual.eliminar(caminoActual.longitud()); //Elimino el nodo adyacente ara seguir recorriendo.
-
-                        }
-
+                        nodoAux = nodoAux.getSigAdy();
+                    
                     }
-                    nodoAux = nodoAux.getSigAdy();
-
                 }
-            }
 
         }
 
