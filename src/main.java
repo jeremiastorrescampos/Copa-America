@@ -11,6 +11,7 @@ import Estructuras.lineales.listaDinamica.Lista;
 import clases.*;
 import Estructuras.Grafos.*;
 import Estructuras.TablaHashAbierto.TablaHash;
+import Estructuras.arbolHeap.ArbolHeapMin;
 
 public class main {
     private static File obj = new File("log.txt");
@@ -73,7 +74,7 @@ public class main {
             case 7:
                 log("Menu: GolesAFavor");
                 
-                System.out.println("Funcionalidad 7: mostrar equipos ordenados por goles a favor (implementá tu estructura auxiliar).");
+                generarListaOrdenadaDeGolesAFavor();
                 break;
             case 8:
                 log("Menu: MostrarSistema");
@@ -169,6 +170,28 @@ private static void menuViajes() {
     } while (op != 0);
 }
 
+
+public static void generarListaOrdenadaDeGolesAFavor(){
+        System.out.println("Lista actual generada");
+        Lista lis = arbolEquipos.listarInorden();
+        ArbolHeapMin nuevoOrden = new ArbolHeapMin();
+        Equipo aux;
+        EquiposGolesAFavor claseAux;
+        /* Inserto los elementos en el heap Minimo */
+        while (!lis.esVacia()) {
+            aux = (Equipo)lis.recuperar(1);
+            claseAux = new EquiposGolesAFavor(aux);
+            nuevoOrden.insertar(claseAux);
+            lis.eliminar(1);
+        }
+        /* los reinserto en la lista en la posicion 1 para que queden de menor a mayor y mas eficiente */
+        while (!nuevoOrden.esVacia()) {
+            lis.insertar(nuevoOrden.recuperarCima(), 1);
+            nuevoOrden.eliminarCima();
+        }
+        System.out.println(lis.toString());
+        log("Se ejecuto lista ordenada por goles -> " + lis.toString());
+    }
 // ======================= UTILIDAD: Mostrar Sistema (debug) =======================
 private static void mostrarSistema() {
     
